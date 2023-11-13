@@ -2,7 +2,7 @@ import Posts from './Posts';
 import Menu from './Menu'
 const Page = () => {
     
-    
+  
 
     return (
         <>
