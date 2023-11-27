@@ -1,52 +1,25 @@
 import React, { useState, useEffect } from 'react';
 import { Routes, useNavigate } from 'react-router-dom';
-import { initializeApp } from "firebase/app";
 import { getFirestore, collection, query, where, addDoc, updateDoc, getDocs, doc, setDoc, getDoc } from "firebase/firestore"
+import Like from './Like'
+import PostBlock from './PostBlock';
 
-const Posts = () => {
-    
-    const firebaseConfig = {
-        apiKey: "AIzaSyDT-oD3sZuAxmGXzlHBK6dC1fyKkwlBgK4",
-        authDomain: "farmconnectr.firebaseapp.com",
-        projectId: "farmconnectr",
-        storageBucket: "farmconnectr.appspot.com",
-        messagingSenderId: "388880470124",
-        appId: "1:388880470124:web:ae24d1447b9dcbc1628849",
-        measurementId: "G-HYX95953L8"
-    };
-      
-      // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const firestore = getFirestore(app);
+
+const Posts = (props) => {    
 
     const [counter, setCounter] = useState(0);
     const [postsData, setPostsData] = useState(null);
-    const [recentPosts, setRecentPosts] = useState([]);
+    const currentPosts = props.recentPosts
 
-    useEffect(() => {
-        const fetchData = async () => {
-            const postsDocId = 'allPosts';
-            const postsDocRef = doc(firestore, 'posts', postsDocId)
-            const postsDocData = await getDoc(postsDocRef);
-            if (postsDocData.exists()) {
-                setRecentPosts(postsDocData.data().recentPosts);
-            }
-        };
-
-        fetchData();
-    }, []);
 
     return (
         <>
+            
             <div id='primary-content'>
-                    {recentPosts.map((post, index) => (
-                        <div key={index} className='post-box'>
-                            <p>{post.id}</p>
-                            <p>{post.postContent}</p>
-                            {/* Add other elements based on post properties */}
-                        </div>
-                    ))}
-                </div>
+                {props.recentPosts.map((post, index) => (
+                    <PostBlock post={post} index={index} showPost={props.showPost} setShowPost={props.setShowPost} setFullData={props.setFullData} useState={useState} />  
+                ))}
+            </div>
         </>
     )
 }

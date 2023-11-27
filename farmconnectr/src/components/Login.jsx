@@ -1,24 +1,34 @@
 import React, { useState } from 'react';
 import { Navigate, Routes, useNavigate } from 'react-router-dom';
+import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
 
 
 const Login = () => {
   const navigate = useNavigate();
 
-  // const handleLogin = () => {
-  //   // Add your login logic here
-
-  //   // Navigate to the homepage after successful login
-  //   history.push('/home');
-  // };
+  const auth = getAuth();
+  function guestLogin(e) {
+    e.preventDefault();
+    navigate('/');
+  }
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
-
-  const handleLogin = (e) => {
-    // alert('idk')
+  const [userLocalDisplayName, setUserLocalDisplayName] = useState('')
+  const handleSignup = (e) => {
+    createUserWithEmailAndPassword(auth, username, password)
+      .then((userCredential) => {
+        const user = userCredential.user;
+        console.log(userCredential) 
+        console.log(user)
+      })
+      .catch((error) => {
+        const errorCode = error.code;
+        const errorMessage = error.message;
+        // ..
+      });
     e.preventDefault();
-    navigate('/timeline');
+    navigate('/');
   };
 
   return (
@@ -26,29 +36,53 @@ const Login = () => {
         <div className='header'>
             <h2 className='login-header all-text'>Welcome to farmconnectr</h2>
         </div>
-        <form onSubmit={handleLogin}>
-            <div>
-            <label className='all-text'>Username:</label>
-            <input
-                type="text"
-                value={username}
-                onChange={(e) => setUsername(e.target.value)}
-            />
+        <div className='content-blocks'>
+          <div className='signup-side side'>
+            <h3 className='connect-header all-text'>SignUp/SignIn</h3>
+            <div className='experience'>
+              <form>
+                <div>
+                  <label className='input-field all-text'>Username:</label>
+                  <input
+                      className='input-field'
+                      type="text"
+                      value={userLocalDisplayName}
+                      onChange={(e) => setUserLocalDisplayName(e.target.value)}
+                  />
+                  </div>
+                  <div>
+                  <label className='input-field all-text'>Email:</label>
+                  <input
+                      className='input-field'
+                      type="text"
+                      value={username}
+                      onChange={(e) => setUsername(e.target.value)}
+                  />
+                  </div>
+                  <div>
+                  <label className='all-text'>Password:</label>
+                  <input
+                      className='input-field'
+                      type="password"
+                      value={password}
+                      onChange={(e) => setPassword(e.target.value)}
+                  />
+                  </div>
+                  <button className='connect-button' type="submit" onClick={() => alert('working on it')}>SignIn</button>
+                  <button className='connect-button' type="submit" onClick={handleSignup}>SignUp</button>
+              </form>
             </div>
-            <div>
-            <label className='all-text'>Password:</label>
-            <input
-                type="password"
-                value={password}
-                onChange={(e) => setPassword(e.target.value)}
-            />
+          </div>
+          <div className='guest-side side'>
+            <h3 className='connect-header all-text'>Guest Experience</h3>
+            <div className='experience'>
+                <button onClick={guestLogin} className='guest-experience-button all-text'>Try as Guest</button>
+                <div className='guest-experience-exp'>
+                  <p className='explanation all-text'>As a guest you can post and comment and try out other functionality but some things won't be saved and you may not be able to use some features.</p>
+                </div>
             </div>
-            <button type="submit">Login</button>
-            <div className='guest-experience'>
-              <h3 className='guest-experience-header all-text'>Try our Guest Experience!</h3>
-            <button onClick={handleLogin} className='guest-experience-button all-text'>Try as Guest</button>
-            </div>
-        </form>
+          </div>
+        </div>
     </div>
   );
 };
