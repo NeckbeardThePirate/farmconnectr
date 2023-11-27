@@ -21,6 +21,7 @@ const Login = () => {
         const user = userCredential.user;
         console.log(userCredential) 
         console.log(user)
+
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -88,3 +89,5 @@ const Login = () => {
 };
 
 export default Login;
+
+//this is a test
