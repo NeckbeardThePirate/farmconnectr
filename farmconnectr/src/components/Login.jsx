@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import { Navigate, Routes, useNavigate } from 'react-router-dom';
 import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import BuildUserDoc from './BuildUserDoc';
+import { collection, addDoc } from "firebase/firestore";
 
-
-const Login = () => {
+const Login = ({ firestore }) => {
   const navigate = useNavigate();
 
   const auth = getAuth();
@@ -12,16 +13,16 @@ const Login = () => {
     navigate('/');
   }
 
-  const [username, setUsername] = useState('');
+  const [email, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [userLocalDisplayName, setUserLocalDisplayName] = useState('')
   const handleSignup = (e) => {
-    createUserWithEmailAndPassword(auth, username, password)
+    createUserWithEmailAndPassword(auth, email, password)
       .then((userCredential) => {
         const user = userCredential.user;
         console.log(userCredential) 
         console.log(user)
-
+        BuildUserDoc(collection, firestore, email, userLocalDisplayName, user, addDoc)
       })
       .catch((error) => {
         const errorCode = error.code;
@@ -56,7 +57,7 @@ const Login = () => {
                   <input
                       className='input-field'
                       type="text"
-                      value={username}
+                      value={email}
                       onChange={(e) => setUsername(e.target.value)}
                   />
                   </div>
@@ -90,4 +91,4 @@ const Login = () => {
 
 export default Login;
 
-//this is a test
+

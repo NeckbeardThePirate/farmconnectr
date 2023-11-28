@@ -1,4 +1,3 @@
-import { initializeApp } from "firebase/app";
 import { getFirestore, doc, getDoc, updateDoc } from "firebase/firestore";
 import Posts from './Posts';
 import Menu from './Menu';
@@ -6,20 +5,22 @@ import BlowUpPost from './BlowUpPost'
 import React, { useState, useEffect } from 'react';
 import Banner from './Banner'
 
-const Page = () => {
-    const firebaseConfig = {
-        apiKey: "AIzaSyDT-oD3sZuAxmGXzlHBK6dC1fyKkwlBgK4",
-        authDomain: "farmconnectr.firebaseapp.com",
-        projectId: "farmconnectr",
-        storageBucket: "farmconnectr.appspot.com",
-        messagingSenderId: "388880470124",
-        appId: "1:388880470124:web:ae24d1447b9dcbc1628849",
-        measurementId: "G-HYX95953L8"
-    };
+const Page = (props) => {
+    // const firebaseConfig = {
+    //     apiKey: "AIzaSyDT-oD3sZuAxmGXzlHBK6dC1fyKkwlBgK4",
+    //     authDomain: "farmconnectr.firebaseapp.com",
+    //     projectId: "farmconnectr",
+    //     storageBucket: "farmconnectr.appspot.com",
+    //     messagingSenderId: "388880470124",
+    //     appId: "1:388880470124:web:ae24d1447b9dcbc1628849",
+    //     measurementId: "G-HYX95953L8"
+    // };
 
-    // Initialize Firebase
-    const app = initializeApp(firebaseConfig);
-    const firestore = getFirestore(app);
+    // // Initialize Firebase
+    // const app = initializeApp(firebaseConfig);
+    // const firestore = getFirestore(app);
+
+    const firestore = props.firestore;
     const postsDocId = 'allPosts';
     const postsDocRef = doc(firestore, 'posts', postsDocId);
     const [recentPosts, setRecentPosts] = useState([]);

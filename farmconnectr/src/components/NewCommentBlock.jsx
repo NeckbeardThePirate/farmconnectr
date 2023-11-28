@@ -1,9 +1,10 @@
 
 
 export default function NewCommentBlock(props) {
-
+    //Using state to hold comment author and content
     const [commentContent, setCommentContent] = props.useState('')
     const [authorName, setAuthorName] = props.useState('')
+    //function to submit the comment
     const handleClick = async () => {
         const inputAuthor = authorName !== ''
         const newCommentAuthor = inputAuthor ? authorName : 'Unidentified Guest'
@@ -15,13 +16,12 @@ export default function NewCommentBlock(props) {
             id: newCommentAuthor + newCommentTimestamp,
         }
 
-        console.log('17 NCB',props.postComments)
-
+        //swapping the old PostComments for the new
         const updatedComments = [newComment, ...props.postComments];
         props.setPostComments(updatedComments);
         props.setShowNewCommentBlock(false)
 
-
+        //finding the relevant post and applying the comments
         const postId = props.fullData.id;
         const postIndex = props.recentPosts.findIndex(post => post.id === postId)
         const updatedPost =  props.fullData;
@@ -30,8 +30,7 @@ export default function NewCommentBlock(props) {
         console.log('postindex', postIndex)
         updatedRecentPosts[postIndex] = updatedPost;
 
-        console.log('comment contenst ', commentContent)
-
+        //updating the comments db side
         await props.updateDoc(props.postsDocRef, {recentPosts: updatedRecentPosts})
             .then(() => {
                 console.log('successfully commented')
