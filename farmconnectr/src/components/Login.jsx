@@ -62,7 +62,7 @@ const Login = ({ firestore }) => {
                   />
                   </div>
                   <div>
-                  <label className='all-text'>Password:</label>
+                  <label className='input-field all-text'>Password:</label>
                   <input
                       className='input-field'
                       type="password"
@@ -70,8 +70,10 @@ const Login = ({ firestore }) => {
                       onChange={(e) => setPassword(e.target.value)}
                   />
                   </div>
-                  <button className='connect-button' type="submit" onClick={() => alert('working on it')}>SignIn</button>
-                  <button className='connect-button' type="submit" onClick={handleSignup}>SignUp</button>
+                  <div className='connect-buttons'>
+                    <button className='connect-button' type="submit" onClick={() => alert('working on it')}>SignIn</button>
+                    <button className='connect-button' type="submit" onClick={handleSignup}>SignUp</button>
+                  </div>
               </form>
             </div>
           </div>
@@ -88,6 +90,9 @@ const Login = ({ firestore }) => {
     </div>
   );
 };
+
+
+
 
 export default Login;
 
